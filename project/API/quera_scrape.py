@@ -59,7 +59,6 @@ driver.implicitly_wait(10)
 time.sleep(random.randint(3,10))
 print("\n Launched")
 
-exit() 
 
 #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%login with credentials %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 def login():
@@ -119,12 +118,12 @@ def home_load():
 
     timeout = 50 # Logged in So now it checks for home screen loaded or not  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     try:
-        myElem = WebDriverWait(driver, timeout).until(EC.presence_of_element_located((By.CLASS_NAME, 'lhMPoC')))
+        myElem = WebDriverWait(driver, timeout).until(EC.presence_of_element_located((By.CLASS_NAME, 'q-platform--desktop')))
         try:
             myElem = WebDriverWait(driver, timeout).until(EC.presence_of_element_located((By.ID, 'small_close')))
             try:
                 myElem = WebDriverWait(driver, timeout).until(EC.presence_of_element_located((By.XPATH, '//*[text()="What is your question or link?"]')))
-                return 3
+                return 4
             except Exception as e:
                 print("\n home_load Error due  to : )))))= ",e)
         except Exception as e:
@@ -132,18 +131,20 @@ def home_load():
     except Exception as e:
         print("\n home_load Error due to : )))))= ",e)
 
-    return 
+    return 1
 def load_home():
     home_loads=0
     home_attempt=0
-    while home_loads !=3 :
+    while home_loads < 3 :
         home_loads=home_load()
         home_attempt=home_attempt+1
         if home_load ==3:
             print("\n Home loaded successfuly")
-        if home_attempt == 3 :
+        if home_attempt > 3 :
             print("\ncould not load home page")
             driver.close()
+            exit()
+            
     
     
 def check_accounts_count():
@@ -197,7 +198,10 @@ def main_function():
             
             
     #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Iterate among the account names and DOWNLOAD HTML_DUMP %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
+    
+    if len(people) < 1 :
+        return check_accounts_count()
+        
     for name in reversed(people):
         
         
@@ -206,7 +210,7 @@ def main_function():
         csv_list = data['Account_Names'].tolist()
         if name in csv_list:
             continue
-        if len(csv_list) == 4:
+        if len(csv_list) > 5:
             return check_accounts_count()
         
         timeout=50
@@ -225,7 +229,7 @@ def main_function():
             driver.switch_to.window(driver.window_handles[1])
             print("\n Account",name,"scrape initiated | Account NO : ",check_accounts_count())
         except Exception as e:
-            print("\n Click account  Error due to : )))))= ",e)
+            print("\n Click account  Error due to : +)))))))= ",e)
             main_function()
             return check_accounts_count()
 
@@ -354,7 +358,7 @@ def main_function():
     return check_accounts_count()
           
 main_functions = 0
-while main_functions < 4 :
+while main_functions < 6 :
     print("Initiating main function")
     main_functions=main_function() 
     
